@@ -1292,6 +1292,8 @@ if (typeof Snap != 'undefined') {
       };
 
   var LOADED_FONTS = {};
+  
+  var options = {};
 
   /******************
    * SnapTheme
@@ -1331,6 +1333,16 @@ if (typeof Snap != 'undefined') {
             this.waitForFont(function() {
               resume(that);
             });
+			
+			options.line = !!options.line ? options.line : {};
+			options.line = {...LINE,...options.line};
+			
+			options.rect = !!options.rect ? options.rect : {};
+			options.rect = {...RECT,...options.rect};
+			
+			options.text = !!options.text ? options.text : {};
+			
+			this.options = options;
           },
 
     // Wait for loading of the font
@@ -1448,8 +1460,8 @@ if (typeof Snap != 'undefined') {
       return t;
     },
 
-    drawLine: function(x1, y1, x2, y2, linetype, arrowhead) {
-      var line = this.paper_.line(x1, y1, x2, y2).attr(LINE);
+    drawLine: function(x1, y1, x2, y2, linetype, arrowhead, options = this.options.line) {
+      var line = this.paper_.line(x1, y1, x2, y2).attr(options);
       if (linetype !== undefined) {
         line.attr('strokeDasharray', this.lineTypes_[linetype]);
       }
@@ -1460,7 +1472,7 @@ if (typeof Snap != 'undefined') {
     },
 
     drawRect: function(x, y, w, h) {
-      var rect = this.paper_.rect(x, y, w, h).attr(RECT);
+      var rect = this.paper_.rect(x, y, w, h).attr(this.options.rect);
       return this.pushToStack(rect);
     },
 
@@ -1483,7 +1495,8 @@ if (typeof Snap != 'undefined') {
       // Now move the text into place
       // `y - bb.y` because text(..) is positioned from the baseline, so this moves it down.
       t.attr({x: x - bb.x, y: y - bb.y});
-      t.selectAll('tspan').attr({x: x});
+	  let attr = {...this.options.text,x : x}
+      t.selectAll('tspan').attr(attr);
 
       this.pushToStack(t);
       return t;
