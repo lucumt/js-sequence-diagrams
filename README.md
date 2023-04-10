@@ -22,6 +22,14 @@ Requirements
 ------------
 You will need [Snap.svg](http://snapsvg.io/), [Web Font Loader](https://github.com/typekit/webfontloader) (if you wish to use custom fonts), [underscore.js](http://underscorejs.org/) (or [lodash](https://lodash.com/)), and optionally [jQuery](https://jquery.com/).
 
+# Compile
+
+Update code of `sequence-diagram.js` and then generate `sequence-diagram-min.js` and `sequence-diagram-min.js.map`
+
+```bash
+java -jar closure-compiler-v20190325.jar --js sequence-diagram.js --create_source_map ./sequence-diagram-min.js.map --source_map_format=V3 --js_output_file sequence-diagram-min.js
+```
+
 
 Installation
 ----------------------
@@ -38,7 +46,7 @@ Run `bower install bramp/js-sequence-diagrams` and include the scripts below:
 ```
 
 also import the CSS if you plan to use the hand drawn theme:
- 
+
 ```html
 <link href="{{ bower directory }}/js-sequence-diagrams/dist/sequence-diagram-min.css" rel="stylesheet" />
 ```
